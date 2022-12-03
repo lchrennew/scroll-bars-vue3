@@ -1,14 +1,17 @@
 {
   "name": "scroll-bars-vue3",
   "private": false,
-  "version": "0.0.0",
+  "version": "0.0.1-opt.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "files": ["vite.config.js", "src"],
+  "files": [
+    "vite.config.js",
+    "src"
+  ],
   "dependencies": {
     "vue": "^3.2.41"
   },
