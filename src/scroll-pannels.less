@@ -1,0 +1,111 @@
+@scroll-bar-width: 18px;
+@scroll-bar-handler-width: 7px;
+@scroll-bar-hover-width: 18px;
+@scroll-bar-handler-hover-width: 11px;
+
+.scroll-panel {
+  transform: scale(1);
+  overflow: hidden;
+
+  .content {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  /* 默认的滚动条 */
+
+  & > .scroll-bar {
+    background-color: transparent;
+    position: fixed;
+    user-select: none;
+    pointer-events: visible;
+    padding: 0;
+    opacity: 0;
+    transition: opacity .2s ease-in-out .6s, background-color 0s 1s, border-left-color 0s 1s, border-right-color 0s 1s;
+    border-color: transparent;
+    z-index: 2;
+
+    & > .handler {
+      margin: 3px;
+      background-color: rgba(0, 0, 0, 30%);
+      border-radius: @scroll-bar-handler-width;
+      position: absolute;
+      transition: width 0s 1s, height 0s 1s;
+    }
+
+    &.x {
+      height: @scroll-bar-width;
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      border-top: solid 1px transparent;
+
+      & > .handler {
+        height: @scroll-bar-handler-width;
+        bottom: 0;
+      }
+    }
+
+    &.y {
+      width: @scroll-bar-width;
+      height: 100%;
+      top: 0;
+      right: 0;
+      border-left: solid 1px transparent;
+
+      & > .handler {
+        width: @scroll-bar-handler-width;
+        right: 0;
+      }
+    }
+
+    /* 浮动到滚动条上 */
+
+    &:hover {
+      background-color: rgba(250, 250, 250, 0.9);
+      border-color: rgba(222, 222, 222, 0.5);
+      opacity: 1;
+      pointer-events: all;
+      transition: background-color .1s linear,
+      border-left-color .1s linear,
+      border-top-color .1s linear;
+
+      & > .handler {
+        border-radius: @scroll-bar-handler-hover-width;
+        transition: width .1s linear, height .1s linear, top .3s ease-in-out, left .3s ease-in-out;
+      }
+
+      &.x {
+        height: @scroll-bar-hover-width;
+
+        & > .handler {
+          height: @scroll-bar-handler-hover-width;
+        }
+      }
+
+      &.y {
+        width: @scroll-bar-hover-width;
+
+        & > .handler {
+          width: @scroll-bar-handler-hover-width;
+        }
+      }
+    }
+  }
+
+
+  /* 滚动时的滚动条 */
+
+  &.scrolling > .scroll-bar {
+    pointer-events: all;
+    opacity: 1;
+    transition: opacity 10ms linear 0s;
+
+    &:hover > .handler {
+      border-radius: @scroll-bar-handler-hover-width;
+      transition: unset;
+    }
+  }
+}
