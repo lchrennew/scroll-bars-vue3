@@ -151,7 +151,6 @@ const onScrollBarClickY = e => {
 const onScrollBarHoverX = () => {
     if (!props.scrollX) return
     const { clientWidth: xBarWidth } = panel.value
-    const { scrollWidth, clientWidth, } = content.value
     handlerX.value.style.width = `${Math.floor(xBarWidth / scaleX.value - 6)}px`
 }
 
