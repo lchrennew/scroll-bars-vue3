@@ -4,7 +4,7 @@
 @scroll-bar-handler-hover-width: 11px;
 
 .scroll-panel {
-  transform: scale(1);
+  position: relative;
   overflow: hidden;
 
   .content {
@@ -18,7 +18,7 @@
 
   & > .scroll-bar {
     background-color: transparent;
-    position: fixed;
+    position: absolute;
     user-select: none;
     pointer-events: visible;
     padding: 0;

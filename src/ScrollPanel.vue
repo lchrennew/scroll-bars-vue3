@@ -87,6 +87,12 @@ const scrolling = ref(false)
 const timeoutHandler = ref(0)
 
 const onScroll = e => {
+    if ((props.scrollX && overflowX.value && e.deltaX)
+        || (props.scrollY && overflowY.value && e.deltaY)) {
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+    } else return;
+
     const {
         scrollTop: scrollTop0,
         scrollLeft: scrollLeft0,
