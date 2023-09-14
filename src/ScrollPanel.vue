@@ -72,22 +72,16 @@ const handlerY = ref(null)
 const observer = ref(null)
 
 onMounted(() => {
-    registry[id] = () => {
+    const shapeContentSize = () => {
         const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
         contentClientWidth.value = clientWidth
         contentScrollWidth.value = scrollWidth
         contentClientHeight.value = clientHeight
         contentScrollHeight.value = scrollHeight
     }
+    registry[id] = () => shapeContentSize()
 
-    observer.value = new ResizeObserver(() => {
-        const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
-        contentClientWidth.value = clientWidth
-        contentScrollWidth.value = scrollWidth
-        contentClientHeight.value = clientHeight
-        contentScrollHeight.value = scrollHeight
-    })
-
+    observer.value = new ResizeObserver(() => shapeContentSize())
     observer.value.observe(content.value)
 })
 
