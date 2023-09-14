@@ -69,6 +69,8 @@ const content = ref(null)
 const handlerX = ref(null)
 const handlerY = ref(null)
 
+const observer = ref(null)
+
 onMounted(() => {
     registry[id] = () => {
         const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
@@ -77,9 +79,20 @@ onMounted(() => {
         contentClientHeight.value = clientHeight
         contentScrollHeight.value = scrollHeight
     }
+
+    observer.value = new ResizeObserver(() => {
+        const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
+        contentClientWidth.value = clientWidth
+        contentScrollWidth.value = scrollWidth
+        contentClientHeight.value = clientHeight
+        contentScrollHeight.value = scrollHeight
+    })
+
+    observer.value.observe(content.value)
 })
 
 onBeforeUnmount(() => {
+    observer.value.disconnect()
     delete registry[id]
 })
 
@@ -109,13 +122,13 @@ const onScroll = e => {
     const { scrollLeft: scrollLeft1, scrollTop: scrollTop1 } = content.value
     const scrollingX = scrollLeft0 !== scrollLeft1
     if (scrollingX) {
-        handlerX.value.style.width = `${Math.floor(xBarWidth / scaleX.value - 6)}px`
-        handlerX.value.style.left = `${Math.floor(scrollLeft1 / scaleX.value)}px`
+        handlerX.value.style.width = `${ Math.floor(xBarWidth / scaleX.value - 6) }px`
+        handlerX.value.style.left = `${ Math.floor(scrollLeft1 / scaleX.value) }px`
     }
     const scrollingY = scrollTop0 !== scrollTop1
     if (scrollingY) {
-        handlerY.value.style.height = `${Math.floor(yBarHeight / scaleY.value - 6)}px`
-        handlerY.value.style.top = `${Math.floor(scrollTop1 / scaleY.value)}px`
+        handlerY.value.style.height = `${ Math.floor(yBarHeight / scaleY.value - 6) }px`
+        handlerY.value.style.top = `${ Math.floor(scrollTop1 / scaleY.value) }px`
     }
 
     if (scrollingX || scrollingY) {
@@ -132,7 +145,7 @@ const onScrollBarClickX = e => {
         0,
         xBarWidth - handlerY.value.clientWidth - 6
     ].sort()[1]
-    handlerX.value.style.left = `${handlerLeft}px`
+    handlerX.value.style.left = `${ handlerLeft }px`
 
     const { scrollWidth, scrollTop } = content.value
     const scrollLeft = e.offsetX * scrollWidth / xBarWidth
@@ -147,7 +160,7 @@ const onScrollBarClickY = e => {
         0,
         yBarHeight - handlerY.value.clientHeight - 6
     ].sort()[1]
-    handlerY.value.style.top = `${handlerTop}px`
+    handlerY.value.style.top = `${ handlerTop }px`
 
     const { scrollHeight, scrollLeft } = content.value
     const scrollTop = e.offsetY * scrollHeight / yBarHeight;
@@ -157,13 +170,13 @@ const onScrollBarClickY = e => {
 const onScrollBarHoverX = () => {
     if (!props.scrollX) return
     const { clientWidth: xBarWidth } = panel.value
-    handlerX.value.style.width = `${Math.floor(xBarWidth / scaleX.value - 6)}px`
+    handlerX.value.style.width = `${ Math.floor(xBarWidth / scaleX.value - 6) }px`
 }
 
 const onScrollBarHoverY = () => {
     if (!props.scrollY) return
     const { clientHeight: yBarHeight } = panel.value
-    handlerY.value.style.height = `${Math.floor(yBarHeight / scaleY.value - 6)}px`
+    handlerY.value.style.height = `${ Math.floor(yBarHeight / scaleY.value - 6) }px`
 }
 
 const onStartHandlerScrollX = e => {
@@ -182,7 +195,7 @@ const onStartHandlerScrollX = e => {
             0,
             maxScrollLeft
         ].sort((a, b) => a - b)[1]
-        handlerX.value.style.top = `${handlerLeft}px`
+        handlerX.value.style.top = `${ handlerLeft }px`
 
         content.value.scrollTo({
             top: content.value.scrollTop,
@@ -216,7 +229,7 @@ const onStartHandlerScrollY = e => {
             maxScrollTop
         ].sort((a, b) => a - b)[1]
 
-        handlerY.value.style.top = `${handlerTop}px`
+        handlerY.value.style.top = `${ handlerTop }px`
 
         content.value.scrollTo({
             top: content.value.scrollHeight * handlerTop / yBarHeight,
