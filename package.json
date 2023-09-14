@@ -1,7 +1,7 @@
 {
   "name": "scroll-bars-vue3",
   "private": false,
-  "version": "0.0.4-alpha.4",
+  "version": "0.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
