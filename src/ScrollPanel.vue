@@ -74,9 +74,10 @@ const observer = ref(null)
 onMounted(() => {
     const shapeContentSize = () => {
         const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
-        contentClientWidth.value = clientWidth
+        const { clientWidth: maxClientWidth, clientHeight: maxClientHeight } = panel.value
+        contentClientWidth.value = Math.min(clientWidth, maxClientWidth)
         contentScrollWidth.value = scrollWidth
-        contentClientHeight.value = clientHeight
+        contentClientHeight.value = Math.min(clientHeight, maxClientHeight)
         contentScrollHeight.value = scrollHeight
     }
     registry[id] = () => shapeContentSize()
