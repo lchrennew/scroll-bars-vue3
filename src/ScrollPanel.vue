@@ -31,6 +31,19 @@
     </div>
 </template>
 
+<script>
+import { reactive } from "vue";
+
+const registry = reactive({})
+
+setInterval(() => {
+    for (const id in registry) {
+        registry[id]()
+    }
+}, 10)
+
+</script>
+
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 
@@ -59,20 +72,17 @@ const handlerY = ref(null)
 const observer = ref(null)
 
 onMounted(() => {
-    const shapeContentSize = () => {
+    registry[id] = () => {
         const { clientWidth, scrollWidth, clientHeight, scrollHeight } = content.value
         contentClientWidth.value = clientWidth
         contentScrollWidth.value = scrollWidth
         contentClientHeight.value = clientHeight
         contentScrollHeight.value = scrollHeight
     }
-
-    observer.value = new ResizeObserver(() => shapeContentSize())
-    observer.value.observe(content.value)
 })
 
 onBeforeUnmount(() => {
-    observer.value.disconnect()
+    delete registry[id]
 })
 
 const scrolling = ref(false)
