@@ -2,7 +2,7 @@
     <div ref="panel"
          :class="{scrolling}"
          class="scroll-panel"
-         @wheel.passive="onScroll"
+         @wheel="onScroll"
     >
         <div class="content"
              ref="content">
@@ -50,7 +50,8 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 const props = defineProps({
     scrollX: { type: Boolean, default: false },
     scrollY: { type: Boolean, default: false },
-    zIndex: { type: Number, default: 2 }
+    zIndex: { type: Number, default: 2 },
+    prevent: { type: Boolean, default: false }
 })
 
 const id = (Math.random() * 100000).toString(36)
@@ -89,12 +90,12 @@ const scrolling = ref(false)
 const timeoutHandler = ref(0)
 
 const onScroll = e => {
+    if (props.prevent) e.preventDefault()
     if ((props.scrollX && overflowX.value && e.deltaX)
         || (props.scrollY && overflowY.value && e.deltaY)) {
         e.stopPropagation()
         e.stopImmediatePropagation()
     } else return;
-
     const {
         scrollTop: scrollTop0,
         scrollLeft: scrollLeft0,
