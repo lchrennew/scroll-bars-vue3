@@ -104,8 +104,11 @@ const onScroll = e => {
     const { clientWidth: xBarWidth, clientHeight: yBarHeight } = panel.value
 
     if (props.scrollX) {
-        if (content.value.scrollHeight === content.value.clientHeight) return
-        content.value.scrollLeft += e.deltaX
+        if (content.value.scrollWidth !== content.value.clientWidth) {
+            content.value.scrollLeft += e.deltaX
+        } else {
+            return
+        }
     }
     if (props.scrollY) content.value.scrollTop += e.deltaY
 
@@ -133,7 +136,7 @@ const onScrollBarClickX = e => {
     const handlerLeft = [
         Math.floor(e.offsetX - handlerX.value.clientWidth / 2),
         0,
-        xBarWidth - handlerY.value.clientWidth - 6
+        xBarWidth - handlerY.value?.clientWidth ?? 0 - 6
     ].sort()[1]
     handlerX.value.style.left = `${ handlerLeft }px`
 
@@ -185,7 +188,7 @@ const onStartHandlerScrollX = e => {
             0,
             maxScrollLeft
         ].sort((a, b) => a - b)[1]
-        handlerX.value.style.top = `${ handlerLeft }px`
+        handlerX.value.style.left = `${ handlerLeft }px`
 
         content.value.scrollTo({
             top: content.value.scrollTop,
